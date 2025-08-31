@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday, Padu Jiji! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            font-family: 'Quicksand', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        .confetti {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+        }
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 120, 120, 0.15),
+                        0 2px 8px rgba(0,0,0,0.08);
+            padding: 36px 42px 28px 42px;
+            text-align: center;
+            max-width: 410px;
+            z-index: 1;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff7a59;
+            font-size: 2.3em;
+            margin-bottom: 10px;
+            text-shadow: 1px 2px 10px #fff4f7;
+        }
+        .stickers {
+            font-size: 2em;
+            margin: 18px 0;
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1);}
+            50% { transform: scale(1.18);}
+        }
+        .gif {
+            margin: 18px 0;
+        }
+        .gif img {
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(255,120,120,0.15);
+            margin: 6px;
+        }
+        .question {
+            margin-top: 22px;
+            font-size: 1.12em;
+            color: #ff7a59;
+            font-weight: bold;
+        }
+        .options {
+            margin-top: 8px;
+        }
+        .option-btn {
+            background: #ffecd2;
+            border: 2px solid #ff7a59;
+            border-radius: 10px;
+            color: #ff7a59;
+            font-size: 1em;
+            padding: 8px 18px;
+            margin: 7px 0;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            display: block;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .option-btn:hover {
+            background: #ff7a59;
+            color: #fff;
+        }
+        .message {
+            margin-top: 24px;
+            font-size: 1.18em;
+            color: #ffb366;
+            font-style: italic;
+            letter-spacing: 1px;
+            min-height: 38px;
+        }
+        .shayari {
+            background: #fff6e6;
+            border-radius: 14px;
+            padding: 18px 12px;
+            margin-top: 20px;
+            font-size: 1.13em;
+            color: #ff7a59;
+            font-family: 'Quicksand', Arial, sans-serif;
+            box-shadow: 0 2px 8px rgba(255, 120, 120, 0.10);
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti Animation Canvas -->
+    <canvas class="confetti" id="confetti-canvas"></canvas>
+    <div class="card">
+        <div class="stickers">🎁🎉🎂🥳🎈✨🧸🪅🕹️</div>
+        <h1>Happy Birthday, Padu Jiji!</h1>
+        <div class="gif" id="gif-section">
+            <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="Birthday Cake GIF" width="180">
+        </div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="message" id="message"></div>
+        <div class="shayari" id="shayari" style="display:none;">
+            शुभकामनाओं से भरी सुबह हो,<br>
+            खुशियों से भरी शाम हो,<br>
+            हर दिन आपकी ज़िंदगी में आए,<br>
+            खुशियों की सौगात हो।<br><br>
+            जन्मदिन की ढेर सारी शुभकामनाएँ!<br>
+            <span style="color:#e75480;">खुश रहो, मुस्कराते रहो, आगे बढ़ो!</span>
+        </div>
+    </div>
+    <script>
+    // Puzzle Game Logic
+    const questions = [
+        {
+            q: "Which date is your birthday?",
+            options: ["August 31", "January 1", "December 25", "February 14"],
+            answer: 0,
+            message: "Correct! August 31 is the special day! 🎂"
+        },
+        {
+            q: "Which emoji means birthday?",
+            options: ["🎂", "🍕", "🏀", "🚗"],
+            answer: 0,
+            message: "Yay! You picked the cake! 🎉"
+        },
+        {
+            q: "What color is most used for birthday decorations?",
+            options: ["Blue", "Pink", "Gold", "Black"],
+            answer: 2,
+            message: "Gold is super festive! ✨"
+        },
+        {
+            q: "What do friends wish on a birthday?",
+            options: [
+                "Happy Birthday!",
+                "Good Morning!",
+                "Safe Travels!",
+                "Congratulations!"
+            ],
+            answer: 0,
+            message: "Happy Birthday, Padu Jiji! You solved the puzzle! 🥳"
+        }
+    ];
+    const gifs = [
+        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
+        "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+    ];
+    let qIndex = 0;
+    function showQuestion() {
+        document.getElementById('question').textContent = questions[qIndex].q;
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = "";
+        questions[qIndex].options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = "option-btn";
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(i);
+            optionsDiv.appendChild(btn);
+        });
+        document.getElementById('message').textContent = "";
+    }
+    function checkAnswer(selected) {
+        if (selected === questions[qIndex].answer) {
+            document.getElementById('message').textContent = questions[qIndex].message;
+            // Show GIF for each stage
+            if (qIndex < gifs.length) {
+                document.getElementById('gif-section').innerHTML += `<img src="${gifs[qIndex]}" width="180">`;
+            }
+            setTimeout(() => {
+                qIndex++;
+                if (qIndex < questions.length) {
+                    showQuestion();
+                } else {
+                    document.getElementById('question').textContent = "";
+                    document.getElementById('options').innerHTML = "";
+                    document.getElementById('message').innerHTML = `
+                        <strong>Wishing you loads of happiness and joy, Padu Jiji!<br>
+                        May all your dreams come true! 🎁🎂🎈</strong>
+                    `;
+                    document.getElementById('shayari').style.display = "block";
+                }
+            }, 1200);
+        } else {
+            document.getElementById('message').textContent = "Oops! Try again! 🤔";
+        }
+    }
+    showQuestion();
+
+    // Simple Confetti Animation
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let W = window.innerWidth;
+    let H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+    let particles = [];
+    const colors = ["#FFD700", "#FF69B4", "#00BFFF", "#ADFF2F", "#FF7A59", "#FFB366"];
+    for(let i=0; i<80; i++) {
+        particles.push({
+            x: Math.random()*W,
+            y: Math.random()*H,
+            r: Math.random()*8+6,
+            d: Math.random()*W,
+            color: colors[Math.floor(Math.random()*colors.length)]
+        });
+ {
+        ctx.clearRect(0,0,W,H);
+        for(let i=0; i<particles.length; i++) {
+            let p = particles[i];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, false);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        }
+        update();
+    }
+    function update() {
+        for(let i=0; i<particles.length; i++) {
+            let p = particles[i];
+            p.y += Math.cos(p.d) + 2 + p.r/2;
+            p.x += Math.sin(0.01*p.d);
+            if(p.y > H) {
+                p.x = Math.random()*W;
+                p.y = -10;
+            }
+        }
+    }
+    setInterval(draw, 33);
+    window.addEventListener('resize', () => {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = W;
+        canvas.height = H;
+    });
+    </script>
+</body>
+</html>
